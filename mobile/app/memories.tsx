@@ -1,25 +1,16 @@
-import * as reactNative from 'react-native'
-
-export function Memories() {
-  return (
-    <reactNative.View className="flex-1 items-center justify-center">
-      <reactNative.Text>Memories</reactNative.Text>
-    </reactNative.View>
-  )
-}
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '@expo/vector-icons/Feather'
+import * as SecureStore from 'expo-secure-store'
 
 import NLWLogo from '../src/assets/nlw-spacetime-logo.svg'
-import { api } from '../src/assets/lib/api'
-import { useRouter, Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import * as SecureStore from 'expo-secure-store'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import ptBr from 'dayjs/locale/pt-br'
+import ptBR from 'dayjs/locale/pt-br'
+import { api } from '../src/lib/api'
 
-dayjs.locale(ptBr)
+dayjs.locale(ptBR)
 
 interface Memory {
   coverUrl: string
@@ -30,7 +21,6 @@ interface Memory {
 
 export default function NewMemory() {
   const { bottom, top } = useSafeAreaInsets()
-
   const router = useRouter()
   const [memories, setMemories] = useState<Memory[]>([])
 
@@ -45,7 +35,7 @@ export default function NewMemory() {
 
     const response = await api.get('/memories', {
       headers: {
-        Authorization: `Bearer: ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
 
@@ -58,38 +48,39 @@ export default function NewMemory() {
 
   return (
     <ScrollView
-      className="flex-1 px-8"
+      className="flex-1"
       contentContainerStyle={{ paddingBottom: bottom, paddingTop: top }}
     >
-      <reactNative.View className="mt-4 flex-row items-center justify-between">
+      <View className="mt-4 flex-row items-center justify-between px-8">
         <NLWLogo />
-        <reactNative.View className="flex-row gap-2">
+
+        <View className="flex-row gap-2">
           <TouchableOpacity
             onPress={signOut}
-            className="h-10 w-10 items-center  justify-center rounded-full bg-red-500"
+            className="h-10 w-10 items-center justify-center rounded-full bg-red-500"
           >
             <Icon name="log-out" size={16} color="#000" />
           </TouchableOpacity>
 
           <Link href="/new" asChild>
-            <TouchableOpacity className="h-10 w-10 items-center  justify-center rounded-full bg-green-500">
+            <TouchableOpacity className="h-10 w-10 items-center justify-center rounded-full bg-green-500">
               <Icon name="plus" size={16} color="#000" />
             </TouchableOpacity>
           </Link>
-        </reactNative.View>
-      </reactNative.View>
+        </View>
+      </View>
 
-      <reactNative.View className="mt-6 space-y-10">
+      <View className="mt-6 space-y-10">
         {memories.map((memory) => {
           return (
-            <reactNative.View key={memory.id} className="space-y-4">
-              <reactNative.View className="flex-row items-center gap-2">
-                <reactNative.View className="h-px w-5 bg-gray-50" />
-                <reactNative.Text className="font-body text-sm text-gray-100">
+            <View key={memory.id} className="space-y-4">
+              <View className="flex-row items-center gap-2">
+                <View className="h-px w-5 bg-gray-50" />
+                <Text className="font-body text-sm text-gray-100">
                   {dayjs(memory.createdAt).format('D[ de ]MMMM[, ]YYYY')}
-                </reactNative.Text>
-              </reactNative.View>
-              <reactNative.View className="space-y-4 px-8">
+                </Text>
+              </View>
+              <View className="space-y-4 px-8">
                 <Image
                   source={{
                     uri: memory.coverUrl,
@@ -97,22 +88,22 @@ export default function NewMemory() {
                   className="aspect-video w-full rounded-lg"
                   alt=""
                 />
-                <reactNative.Text className="font-body text-base leading-relaxed text-gray-100">
+                <Text className="font-body text-base leading-relaxed text-gray-100">
                   {memory.excerpt}
-                </reactNative.Text>
+                </Text>
                 <Link href="/memories/id" asChild>
                   <TouchableOpacity className="flex-row items-center gap-2">
-                    <reactNative.Text className="font-body text-sm text-gray-200">
+                    <Text className="font-body text-sm text-gray-200">
                       Ler mais
-                    </reactNative.Text>
+                    </Text>
                     <Icon name="arrow-right" size={16} color="#9e9ea0" />
                   </TouchableOpacity>
                 </Link>
-              </reactNative.View>
-            </reactNative.View>
+              </View>
+            </View>
           )
         })}
-      </reactNative.View>
+      </View>
     </ScrollView>
   )
 }

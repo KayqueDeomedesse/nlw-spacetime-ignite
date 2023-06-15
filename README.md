@@ -6,12 +6,12 @@ Para executar o projeto utilize o comando "npm run start" no projeto mobile e o 
 
 # Server
 Para o funcionamento da aplicação é necessário ter o arquivo .env dentro do projeto server. O arquivo deve conter as seguintes linhas de comando:
-------------
+
 #Database
 DATABASE_URL="file:./dev.db"
 
 #Github
 GITHUB_CLIENT_ID=" "
 GITHUB_CLIENT_SECRET=" "
-------------
+
 Para obter o "client id" e o "client secret" é necessário que o usuário tenha uma aplicação OAuth ( pode ser criada nas "configurações de desenvolvedor" do perfil do usuário no GitHub)
